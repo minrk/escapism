@@ -13,7 +13,7 @@ no args are provided.
 import re
 import string
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 SAFE = set(string.ascii_letters + string.digits)
 ESCAPE_CHAR = '_'
