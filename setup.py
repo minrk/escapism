@@ -29,7 +29,7 @@ setup_args = dict(
     author              = "Min RK",
     author_email        = "benjaminrk@gmail.com",
     url                 = "https://github.com/minrk/escapism",
-    license             = "BSD",
+    license             = "MIT",
     classifiers         = [
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
