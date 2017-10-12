@@ -7,9 +7,9 @@
 from __future__ import print_function
 import os
 import sys
-from glob import glob
 
-from distutils.core import setup
+from setuptools import setup
+from setuptools.command.bdist_egg import bdist_egg
 
 pjoin = os.path.join
 here = os.path.abspath(os.path.dirname(__file__))
@@ -18,6 +18,16 @@ here = os.path.abspath(os.path.dirname(__file__))
 version_ns = {}
 with open(pjoin(here, 'escapism.py')) as f:
     exec(f.read(), {}, version_ns)
+
+
+class bdist_egg_disabled(bdist_egg):
+    """Disabled version of bdist_egg
+
+    Prevents setup.py install from performing setuptools' default easy_install,
+    which it should never ever do.
+    """
+    def run(self):
+        sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
 
 
 setup_args = dict(
@@ -37,13 +47,14 @@ setup_args = dict(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
+    cmdclass = {
+        'bdist_egg': bdist_egg if 'bdist_egg' in sys.argv else bdist_egg_disabled,
+    }
 )
-
-if any(bdist in sys.argv for bdist in ('bdist_wheel', 'bdist_egg')):
-    import setuptools
 
 if __name__ == '__main__':
     setup(**setup_args)
