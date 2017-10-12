@@ -12,11 +12,19 @@ no args are provided.
 
 import re
 import string
+import sys
 
 __version__ = '0.0.2'
 
 SAFE = set(string.ascii_letters + string.digits)
 ESCAPE_CHAR = '_'
+
+if sys.version_info >= (3,):
+    _ord = lambda byte: byte
+    _bchr = lambda n: bytes([n])
+else:
+    _ord = ord
+    _bchr = chr
 
 
 def _escape_char(c, escape_char=ESCAPE_CHAR):
@@ -24,7 +32,7 @@ def _escape_char(c, escape_char=ESCAPE_CHAR):
     buf = []
     for byte in c.encode('utf8'):
         buf.append(escape_char)
-        buf.append('%X' % byte)
+        buf.append('%X' % _ord(byte))
     return ''.join(buf)
 
 
@@ -50,7 +58,7 @@ def escape(to_escape, safe=SAFE, escape_char=ESCAPE_CHAR):
             chars.append(c)
         else:
             chars.append(_escape_char(c, escape_char))
-    return ''.join(chars)
+    return u''.join(chars)
 
 
 def _unescape_char(m):
@@ -59,7 +67,7 @@ def _unescape_char(m):
     Used as a callback in pattern.subn. `m.group(1)` must be a single byte in hex,
     e.g. `a4` or `ff`.
     """
-    return bytes([int(m.group(1), 16)])
+    return _bchr(int(m.group(1), 16))
 
 
 def unescape(escaped, escape_char=ESCAPE_CHAR):
