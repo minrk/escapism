@@ -1,5 +1,5 @@
 # coding: utf-8
-from escapism import escape, unescape
+from escapism import escape, unescape, SAFE
 
 text = type(u'')
 
@@ -38,4 +38,14 @@ def test_escape_custom_safe():
         u = unescape(e, escape_char=escape_char)
         assert u == s
 
-    
+def test_safe_escape_char():
+    escape_char = '-'
+    safe = SAFE.union({escape_char})
+    e = escape(escape_char, safe=safe, escape_char=escape_char)
+    assert e == '{}{:02X}'.format(escape_char, ord(escape_char))
+    u = unescape(e, escape_char=escape_char)
+    assert u == escape_char
+
+def test_allow_collisions():
+    escaped = escape('foo-bar ', escape_char='-', allow_collisions=True)
+    assert escaped == 'foo-bar-20'
