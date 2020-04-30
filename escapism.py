@@ -13,8 +13,9 @@ no args are provided.
 import re
 import string
 import sys
+import warnings
 
-__version__ = '1.0.0'
+__version__ = "1.0.1"
 
 SAFE = set(string.ascii_letters + string.digits)
 ESCAPE_CHAR = '_'
@@ -67,7 +68,13 @@ def escape(to_escape, safe=SAFE, escape_char=ESCAPE_CHAR, allow_collisions=False
     if allow_collisions:
         safe.add(escape_char)
     elif escape_char in safe:
-        # escape char can't be in safe list
+        warnings.warn(
+            "Escape character %r cannot be a safe character."
+            " Set allow_collisions=True if you want to allow ambiguous escaped strings."
+            % escape_char,
+            RuntimeWarning,
+            stacklevel=2,
+        )
         safe.remove(escape_char)
 
     chars = []
@@ -81,7 +88,7 @@ def escape(to_escape, safe=SAFE, escape_char=ESCAPE_CHAR, allow_collisions=False
 
 def _unescape_char(m):
     """Unescape a single byte
-    
+
     Used as a callback in pattern.subn. `m.group(1)` must be a single byte in hex,
     e.g. `a4` or `ff`.
     """
@@ -90,7 +97,7 @@ def _unescape_char(m):
 
 def unescape(escaped, escape_char=ESCAPE_CHAR):
     """Unescape a string escaped with `escape`
-    
+
     escape_char must be the same as that used in the call to escape.
     """
     if isinstance(escaped, bytes):
