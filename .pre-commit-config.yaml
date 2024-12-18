@@ -34,13 +34,12 @@ repos:
     hooks:
       - id: prettier
         exclude: .*/templates/.*
-  
+
   # autoformat toml
   - repo: https://github.com/ComPWA/taplo-pre-commit
     rev: v0.9.3
     hooks:
       - id: taplo-format
-
 
   # Autoformat and linting, misc. details
   - repo: https://github.com/pre-commit/pre-commit-hooks

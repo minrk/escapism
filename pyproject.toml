@@ -15,14 +15,14 @@ authors = [
   { name = "Min RK", email = "benjaminrk@gmail.com" },
 ]
 keywords = ["escape"]
-license = { text = "BSD-3-Clause" }
+license = { text = "MIT" }
 requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Intended Audience :: System Administrators",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: BSD License",
+  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
 ]
@@ -48,10 +48,10 @@ fallback_version = "0.0.0"
 
 [tool.ruff.lint]
 select = [
-    "E9", # syntax
-    "I", # isort
-    "UP", # pyupgrade
-    "F", # flake8
+  "E9", # syntax
+  "I",  # isort
+  "UP", # pyupgrade
+  "F",  # flake8
 ]
 
 # tbump is used to simplify and standardize the release process when updating

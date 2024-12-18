@@ -12,29 +12,24 @@ no args are provided.
 
 import re
 import string
-import sys
 import warnings
 
 __version__ = "1.1.0.dev"
 
 SAFE = set(string.ascii_letters + string.digits)
-ESCAPE_CHAR = '_'
+ESCAPE_CHAR = "_"
 
-if sys.version_info >= (3,):
-    _ord = lambda byte: byte
-    _bchr = lambda n: bytes([n])
-else:
-    _ord = ord
-    _bchr = chr
+_ord = lambda byte: byte
+_bchr = lambda n: bytes([n])
 
 
 def _escape_char(c, escape_char=ESCAPE_CHAR):
     """Escape a single character"""
     buf = []
-    for byte in c.encode('utf8'):
+    for byte in c.encode("utf8"):
         buf.append(escape_char)
-        buf.append('%X' % _ord(byte))
-    return ''.join(buf)
+        buf.append(f"{_ord(byte):X}")
+    return "".join(buf)
 
 
 def escape(to_escape, safe=SAFE, escape_char=ESCAPE_CHAR, allow_collisions=False):
@@ -60,7 +55,7 @@ def escape(to_escape, safe=SAFE, escape_char=ESCAPE_CHAR, allow_collisions=False
     """
     if isinstance(to_escape, bytes):
         # always work on text
-        to_escape = to_escape.decode('utf8')
+        to_escape = to_escape.decode("utf8")
 
     if not isinstance(safe, set):
         safe = set(safe)
@@ -69,9 +64,8 @@ def escape(to_escape, safe=SAFE, escape_char=ESCAPE_CHAR, allow_collisions=False
         safe.add(escape_char)
     elif escape_char in safe:
         warnings.warn(
-            "Escape character %r cannot be a safe character."
-            " Set allow_collisions=True if you want to allow ambiguous escaped strings."
-            % escape_char,
+            f"Escape character {escape_char!r} cannot be a safe character."
+            " Set allow_collisions=True if you want to allow ambiguous escaped strings.",
             RuntimeWarning,
             stacklevel=2,
         )
@@ -83,7 +77,7 @@ def escape(to_escape, safe=SAFE, escape_char=ESCAPE_CHAR, allow_collisions=False
             chars.append(c)
         else:
             chars.append(_escape_char(c, escape_char))
-    return u''.join(chars)
+    return "".join(chars)
 
 
 def _unescape_char(m):
@@ -102,8 +96,10 @@ def unescape(escaped, escape_char=ESCAPE_CHAR):
     """
     if isinstance(escaped, bytes):
         # always work on text
-        escaped = escaped.decode('utf8')
-    
-    escape_pat = re.compile(re.escape(escape_char).encode('utf8') + b'([a-z0-9]{2})', re.IGNORECASE)
-    buf = escape_pat.subn(_unescape_char, escaped.encode('utf8'))[0]
-    return buf.decode('utf8')
+        escaped = escaped.decode("utf8")
+
+    escape_pat = re.compile(
+        re.escape(escape_char).encode("utf8") + b"([a-z0-9]{2})", re.IGNORECASE
+    )
+    buf = escape_pat.subn(_unescape_char, escaped.encode("utf8"))[0]
+    return buf.decode("utf8")
