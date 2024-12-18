@@ -1,10 +1,11 @@
 name: release
 on:
-  pull_requst:
+  pull_request:
   push:
     branches:
       - main
-    tags: "*"
+    tags:
+      - "**"
 
 jobs:
   release-build:
@@ -29,6 +30,7 @@ jobs:
 
   pypi-publish:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     environment:
       name: Release
     needs:
