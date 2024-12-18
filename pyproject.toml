@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 # ref: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 [project]
 name = "escapism"
-version = "1.0.1"
+version = "1.1.0.dev"
 dynamic = ["readme", "dependencies"]
 description = "Simple, generic API for escaping strings."
 authors = [
@@ -63,7 +63,7 @@ select = [
 github_url = "https://github.com/jupyterhub/escapism"
 
 [tool.tbump.version]
-current = "1.0.1"
+current = "1.1.0.dev"
 
 # Example of a semver regexp.
 # Make sure this matches current_version before

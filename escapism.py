@@ -15,7 +15,7 @@ import string
 import sys
 import warnings
 
-__version__ = "1.0.1"
+__version__ = "1.1.0.dev"
 
 SAFE = set(string.ascii_letters + string.digits)
 ESCAPE_CHAR = '_'
